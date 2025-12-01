@@ -28,7 +28,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animation
-document.querySelectorAll('.benefit-card, .plan-card, .faq-item, .timeline-item, .calculator').forEach(el => {
+document.querySelectorAll('.benefit-card, .plan-card, .faq-item, .timeline-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -143,50 +143,6 @@ window.addEventListener('resize', () => {
 
 // Initialize mobile menu on load
 window.dispatchEvent(new Event('resize'));
-
-// Mining Profit Calculator Functionality
-document.getElementById('calculate-btn').addEventListener('click', calculateProfit);
-
-function calculateProfit() {
-    const hashpower = parseFloat(document.getElementById('hashpower').value);
-    const electricityCost = parseFloat(document.getElementById('electricity-cost').value);
-    const btcPrice = parseFloat(document.getElementById('btc-price').value);
-    const difficulty = parseFloat(document.getElementById('difficulty').value);
-
-    if (!hashpower || !electricityCost || !btcPrice || !difficulty) {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    // Constants
-    const secondsPerDay = 86400;
-    const target = 4294967296; // 2^32
-    const powerConsumptionPerTH = 120; // Watts per TH/s (approximate for modern ASICs)
-    const wattsToKWh = 24 / 1000; // Convert watts to kWh per day
-
-    // Calculate daily BTC mined
-    const dailyBTC = (hashpower * secondsPerDay) / (difficulty * target);
-
-    // Calculate daily revenue
-    const dailyRevenue = dailyBTC * btcPrice;
-
-    // Calculate daily electricity cost
-    const dailyPowerConsumption = hashpower * powerConsumptionPerTH * wattsToKWh;
-    const dailyCost = dailyPowerConsumption * electricityCost;
-
-    // Calculate daily profit
-    const dailyProfit = dailyRevenue - dailyCost;
-
-    // Calculate monthly profit (30 days)
-    const monthlyProfit = dailyProfit * 30;
-
-    // Update results
-    document.getElementById('daily-btc').textContent = dailyBTC.toFixed(8);
-    document.getElementById('daily-revenue').textContent = `$${dailyRevenue.toFixed(2)}`;
-    document.getElementById('daily-cost').textContent = `$${dailyCost.toFixed(2)}`;
-    document.getElementById('daily-profit').textContent = `$${dailyProfit.toFixed(2)}`;
-    document.getElementById('monthly-profit').textContent = `$${monthlyProfit.toFixed(2)}`;
-}
 
 // Add some crypto-themed particle effect (optional)
 function createParticles() {
