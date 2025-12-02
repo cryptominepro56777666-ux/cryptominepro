@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="navbar.css">
 <script src="navbar.js" defer></script>
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -253,6 +253,14 @@ async function convertCrypto() {
 </script>
 <!-- End Calculator -->
 
+    <!-- Who is Anas Ali Section -->
+    <section style="padding:30px; background:#f7f7f7;">
+        <h2>Who is Anas Ali?</h2>
+        <p>Anas Ali is a Pakistan and UAE-based crypto trader providing USDT payment services,
+        digital project support, and trading assistance through the CryptoMinePro platform.</p>
+        <p>Trusted by multiple clients across Karachi, Islamabad, Lahore, Dubai and Sharjah.</p>
+    </section>
+
     <!-- Footer -->
     <footer class="fade-in-section">
         <div class="footer-content">
@@ -287,6 +295,43 @@ async function convertCrypto() {
         initLibreChat('#ai-assistant');
     </script>
     <!-- End AI Assistant -->
+<!-- AI Chat Widget -->
+<div id="chatIcon"
+     style="position:fixed; bottom:20px; right:20px; background:#0f172a; color:#fff; padding:12px 14px; border-radius:50%; cursor:pointer; z-index:999;">
+💬
+</div>
+
+<div id="chatBox"
+     style="display:none; position:fixed; bottom:90px; right:20px; width:300px; background:#fff; color:#000; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.3); padding:15px; z-index:999;">
+    <h3 style="margin-top:0;">AI Assistant</h3>
+    <div id="messages" style="height:150px; overflow-y:auto; margin-bottom:10px; border:1px solid #ddd; padding:10px;"></div>
+    <input id="userInput" type="text" placeholder="Ask something…" style="width:100%; padding:8px; border:1px solid #ccc;">
+    <button id="sendBtn" style="margin-top:8px; width:100%; padding:10px; background:#0f172a; color:#fff; border:none;">Send</button>
+</div>
+
+<script type="module">
+import { getAIResponse } from "./ai/ai-engine.js";
+
+document.getElementById("chatIcon").onclick = () => {
+  const box = document.getElementById("chatBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+};
+
+document.getElementById("sendBtn").onclick = async () => {
+  const input = document.getElementById("userInput");
+  const msg = input.value;
+
+  if (!msg) return;
+
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML += "<p><strong>You:</strong> " + msg + "</p>";
+
+  const reply = await getAIResponse(msg);
+  messagesDiv.innerHTML += "<p><strong>AI:</strong> " + reply + "</p>";
+
+  input.value = "";
+};
+</script>
 </body>
 </html>
 
