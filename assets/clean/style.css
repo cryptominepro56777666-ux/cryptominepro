@@ -1,0 +1,21 @@
+/* Minimal, safe visual polish — no overriding of site theme colors */
+:root { --clean-radius: 12px; --clean-shadow: 0 4px 12px rgba(0,0,0,0.08); --section-pad: 50px; }
+
+/* Section spacing */
+.section-clean { padding-top: var(--section-pad); padding-bottom: var(--section-pad); }
+
+/* Box styles for white containers/cards */
+.box-clean { border-radius: var(--clean-radius); box-shadow: var(--clean-shadow); overflow: hidden; }
+
+/* Gentle button lift (non-breaking) */
+button, .btn { transition: transform .16s ease, box-shadow .16s ease; }
+button:hover, .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.12); }
+
+/* Flex/grid utilities */
+.row-clean { display:flex; gap:24px; flex-wrap:wrap; align-items:stretch; }
+.col-clean { flex:1 1 260px; min-width:220px; }
+
+@media (max-width:800px) {
+  .row-clean { flex-direction:column; gap:14px; }
+  .section-clean { padding-top:28px; padding-bottom:28px; }
+}

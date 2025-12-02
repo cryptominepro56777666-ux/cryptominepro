@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoMinePro Payment – USDT TRC20</title>
+<style>
+  body { font-family: Arial; margin:0; background:#f8f8f8; }
+  .container { max-width: 600px; margin:50px auto; background:#fff; padding:25px; border-radius:12px; box-shadow:0 0 12px rgba(0,0,0,0.15); }
+  h1 { text-align:center; }
+  .qr { text-align:center; margin:20px 0; }
+  input, textarea { width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
+  button { width:100%; padding:12px; background:#0f172a; color:#fff; border:none; border-radius:8px; margin-top:10px; cursor:pointer; }
+  button:hover { opacity:0.9; }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>USDT Payment</h1>
+
+  <h3>Selected Package:</h3>
+  <p id="selectedPlan" style="font-size:18px; font-weight:bold;"></p>
+
+  <h3>Amount (USDT):</h3>
+  <p id="amountBox" style="font-size:20px; font-weight:bold; color:#0f172a;"></p>
+
+  <h3>Send USDT to TRC20 Wallet:</h3>
+  <p id="walletAddress" style="font-family:monospace; word-break:break-all; background:#f1f1f1; padding:10px; border-radius:6px;">
+    TYOURTRC20ADDRESSHERE
+  </p>
+
+  <button onclick="copyAddress()">Copy Address</button>
+
+  <div class="qr">
+    <img id="qrImage" width="180" height="180" />
+  </div>
+
+  <h3>Enter Your Transaction ID (TXID):</h3>
+  <input id="txidInput" type="text" placeholder="Enter TXID here">
+
+  <button onclick="submitTx()">Submit Payment</button>
+  
+  <p id="statusMsg" style="margin-top:15px; font-weight:bold;"></p>
+
+  <p style="margin-top:35px; text-align:center;">
+    <a href="index.html">Back to Home</a>
+  </p>
+</div>
+
+<script>
+  // ---- PLAN & PRICING ----
+  const urlParams = new URLSearchParams(window.location.search);
+  const plan = urlParams.get("plan") || "basic";
+
+  const prices = {
+    basic: 10,
+    advanced: 25,
+    premium: 50
+  };
+
+  document.getElementById("selectedPlan").innerHTML = plan.charAt(0).toUpperCase() + plan.slice(1) + " Package";
+  document.getElementById("amountBox").innerHTML = prices[plan] + " USDT";
+
+  // ---- Wallet Address ----
+  const wallet = "TYOURTRC20ADDRESSHERE"; // replace with your TRC20 USDT address
+  document.getElementById("walletAddress").innerText = wallet;
+
+  // ---- QR Code ----
+  document.getElementById("qrImage").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=tron:" + wallet;
+
+  // ---- Copy Function ----
+  function copyAddress() {
+    navigator.clipboard.writeText(wallet);
+    alert("Wallet address copied!");
+  }
+
+  // ---- Submit TXID ----
+  function submitTx() {
+    const txid = document.getElementById("txidInput").value;
+
+    if (!txid) {
+      alert("Please enter your TXID");
+      return;
+    }
+
+    const plan = new URLSearchParams(window.location.search).get("plan") || "basic";
+
+    let record = {
+      plan: plan,
+      txid: txid,
+      time: new Date().toLocaleString(),
+      status: "Pending"
+    };
+
+    let list = JSON.parse(localStorage.getItem("txList") || "[]");
+    list.push(record);
+    localStorage.setItem("txList", JSON.stringify(list));
+
+    document.getElementById("statusMsg").innerHTML =
+      "Your TXID has been submitted. Awaiting manual verification.";
+  }
+</script>
+
+</body>
+</html>
