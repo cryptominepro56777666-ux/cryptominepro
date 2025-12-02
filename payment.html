@@ -27,10 +27,17 @@
 
   <h3>Send USDT to TRC20 Wallet:</h3>
   <p id="walletAddress" style="font-family:monospace; word-break:break-all; background:#f1f1f1; padding:10px; border-radius:6px;">
-    TYOURTRC20ADDRESSHERE
+    TCt7f3B8XDT5TZAsg24rUDA5ACzVrWPVWy
   </p>
 
-  <button onclick="copyAddress()">Copy Address</button>
+  <button onclick="copyAddress()">Copy TRC20 Address</button>
+
+  <h3>Send USDT to ERC20 Wallet:</h3>
+  <p id="walletAddress2" style="font-family:monospace; word-break:break-all; background:#f1f1f1; padding:10px; border-radius:6px;">
+    0xeFfb345c1ACFFb3604B1157A839c6625ed5278B1
+  </p>
+
+  <button onclick="copyAddress2()">Copy ERC20 Address</button>
 
   <div class="qr">
     <img id="qrImage" width="180" height="180" />
@@ -62,18 +69,25 @@
   document.getElementById("selectedPlan").innerHTML = plan.charAt(0).toUpperCase() + plan.slice(1) + " Package";
   document.getElementById("amountBox").innerHTML = prices[plan] + " USDT";
 
-  // ---- Wallet Address ----
-  const wallet = "TYOURTRC20ADDRESSHERE"; // replace with your TRC20 USDT address
-  document.getElementById("walletAddress").innerText = wallet;
+  // ---- Wallet Addresses ----
+  const walletTRC20 = "TCt7f3B8XDT5TZAsg24rUDA5ACzVrWPVWy"; // TRC20 USDT address
+  const walletERC20 = "0xeFfb345c1ACFFb3604B1157A839c6625ed5278B1"; // ERC20 USDT address
+  document.getElementById("walletAddress").innerText = walletTRC20;
+  document.getElementById("walletAddress2").innerText = walletERC20;
 
   // ---- QR Code ----
   document.getElementById("qrImage").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=tron:" + wallet;
+    "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=tron:" + walletTRC20;
 
-  // ---- Copy Function ----
+  // ---- Copy Functions ----
   function copyAddress() {
-    navigator.clipboard.writeText(wallet);
-    alert("Wallet address copied!");
+    navigator.clipboard.writeText(walletTRC20);
+    alert("TRC20 Wallet address copied!");
+  }
+
+  function copyAddress2() {
+    navigator.clipboard.writeText(walletERC20);
+    alert("ERC20 Wallet address copied!");
   }
 
   // ---- Submit TXID ----
