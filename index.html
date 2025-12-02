@@ -208,6 +208,51 @@
         </div>
     </section>
 
+    <!-- Crypto Calculator Section -->
+<section style="padding:40px; text-align:center; background:#ffffff; color:#000000;">
+    <h2 style="font-size:32px; margin-bottom:25px;">Crypto Calculator</h2>
+    <p style="opacity:0.7; margin-bottom:20px;">Convert USDT, BTC, ETH into USD instantly</p>
+
+    <div style="max-width:400px; margin:0 auto; text-align:left; background:#f1f1f1; padding:20px; border-radius:10px;">
+        <label>Amount:</label>
+        <input id="amountInput" type="number" value="1"
+            style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+
+        <label>Crypto:</label>
+        <select id="cryptoSelect"
+            style="width:100%; padding:10px; margin-bottom:20px; border-radius:8px; border:1px solid #ccc;">
+            <option value="bitcoin">BTC</option>
+            <option value="ethereum">ETH</option>
+            <option value="tether">USDT</option>
+        </select>
+
+        <button onclick="convertCrypto()"
+            style="width:100%; padding:12px; background:#1e293b; color:#fff; border:none; border-radius:8px;">
+            Convert
+        </button>
+
+        <div id="resultBox"
+            style="margin-top:20px; font-size:18px; font-weight:700;"></div>
+    </div>
+</section>
+
+<script>
+async function convertCrypto() {
+    let amount = document.getElementById("amountInput").value;
+    let crypto = document.getElementById("cryptoSelect").value;
+
+    let response = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=" + crypto + "&vs_currencies=usd"
+    );
+    let data = await response.json();
+    let usd = data[crypto].usd * amount;
+
+    document.getElementById("resultBox").innerHTML =
+        amount + " " + crypto.toUpperCase() + " = $" + usd.toFixed(2);
+}
+</script>
+<!-- End Calculator -->
+
     <!-- Footer -->
     <footer class="fade-in-section">
         <div class="footer-content">
