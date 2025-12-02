@@ -1,0 +1,28 @@
+{
+  "companyName": "CryptoMinePro",
+  "tagline": "Smart Digital Asset Management & Automated Earning Solutions",
+  
+  "headquarters": {
+    "city": "Dubai",
+    "area": "Dubai Silicon Oasis",
+    "country": "United Arab Emirates"
+  },
+
+  "corporateOffice": {
+    "address": "Karl Johans Gate 12",
+    "city": "Oslo",
+    "country": "Norway"
+  },
+
+  "contact": {
+    "supportEmail": "support@cryptominepro.com",
+    "businessEmail": "business@cryptominepro.com",
+    "phone": "+971-55-000-0000"
+  },
+
+  "legal": {
+    "businessType": "Technology & Digital Services Platform",
+    "compliance": "Fully compliant with UAE and EU digital service regulations",
+    "disclaimer": "CryptoMinePro does not sell investment schemes. All services are delivered as task-based digital solutions with optional digital asset handling."
+  }
+}
