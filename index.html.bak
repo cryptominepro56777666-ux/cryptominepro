@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="navbar.css">
-<script src="navbar.js" defer></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +12,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏️</text></svg>">
 </head>
 <body>
-<nav class="navbar"><div class="logo">CryptoMinePro</div><button class="menu-btn" onclick="toggleMenu()">☰</button><ul id="menu" class="menu"><li><a href="index.html">Home</a></li><li><a href="plans.html">Plans</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
     <!-- Header -->
     <header>
         <nav>
@@ -234,13 +231,5 @@
     </footer>
 
     <script src="script.js"></script>
-
-    <!-- AI Assistant Widget -->
-    <script src="src/librechat/widget.js"></script>
-    <div id="ai-assistant"></div>
-    <script>
-        initLibreChat('#ai-assistant');
-    </script>
-    <!-- End AI Assistant -->
 </body>
 </html>

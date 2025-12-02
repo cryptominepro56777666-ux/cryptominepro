@@ -1,0 +1,41 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0a0a0a;
+  padding: 15px 20px;
+  color: white;
+  border-bottom: 1px solid #333;
+}
+
+.menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.menu-btn {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .menu {
+    display: none;
+    flex-direction: column;
+    background: #111;
+    padding: 10px;
+  }
+  .menu-btn {
+    display: block;
+  }
+}

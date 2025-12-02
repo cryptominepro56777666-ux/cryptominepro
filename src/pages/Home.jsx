@@ -1,8 +1,10 @@
 import USDTFlip from "../components/USDTFlip";
+import CryptoTicker from "../components/CryptoTicker";
 
 export default function Home() {
   return (
     <div className="text-center py-20">
+      <CryptoTicker />
       <h1 className="text-4xl font-bold">
         Fast, Secure USDT Payments for Your Tasks & Services
       </h1>
