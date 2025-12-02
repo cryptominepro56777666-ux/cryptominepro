@@ -40,7 +40,7 @@
                 <li>You get returns within 24 hrs to 1 week</li>
             </ul>
             <p>Minimum Investment: 500 USD</p>
-            <a href="#plans" class="cta-button">Start Mining Now</a>
+            <a href="plans.html" href="#plans" class="cta-button">Start Mining Now</a>
         </div>
         <div class="hero-bg"></div>
     </section>
@@ -82,7 +82,7 @@
                 <ul>
                     <li>Invest $500 and get up to 14x returns. Perfect for quick growth with 24-hour to 7-day payouts.</li>
                 </ul>
-                <button class="buy-button">Buy Now</button>
+                <button class="buy-button" onclick="window.location.href='payment.html?plan=basic'">Buy Now</button>
             </div>
             <div class="plan-card popular">
                 <h3>Standard Plan — Balanced & Low Risk</h3>
@@ -90,7 +90,7 @@
                 <ul>
                     <li>Invest $2,200 with 8x guaranteed returns. Ideal for steady profits over 1 to 7 days.</li>
                 </ul>
-                <button class="buy-button">Buy Now</button>
+                <button class="buy-button" onclick="window.location.href='payment.html?plan=advanced'">Buy Now</button>
             </div>
             <div class="plan-card">
                 <h3>Premium Plan — Safe & Secure</h3>
@@ -98,7 +98,7 @@
                 <ul>
                     <li>Invest $47,000 for reliable, stable profits with flexible returns from 24 hours up to 7 days.</li>
                 </ul>
-                <button class="buy-button">Buy Now</button>
+                <button class="buy-button" onclick="window.location.href='payment.html?plan=premium'">Buy Now</button>
             </div>
         </div>
         <p>Act Now — Deposit Today & Watch Your Investment Grow! Choose your plan, deposit immediately, and start earning from your first day.</p>
@@ -231,5 +231,99 @@
     </footer>
 
     <script src="script.js"></script>
+
+<!-- USDT (TRC20) Live Balance Checker -->
+<section class="section-clean" id="usdt-checker" style="background:#fff; padding:30px; max-width:720px; margin:40px auto; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.06);">
+  <h2 style="text-align:center; margin-top:0;">USDT (TRC20) Balance Checker</h2>
+
+  <div style="display:flex; gap:12px; align-items:center; justify-content:center; margin:18px 0;">
+    <input id="tronAddressInput" placeholder="Enter TRON address (e.g. T...)" style="width:60%; padding:10px; border-radius:8px; border:1px solid #ccc;" />
+    <button id="checkBalanceBtn" style="padding:10px 14px; border-radius:8px; background:#0f172a; color:white; border:none;">Check</button>
+    <button id="useInvoiceAddrBtn" style="padding:10px 14px; border-radius:8px; background:#047857; color:white; border:none;">Use Invoice Address</button>
+  </div>
+
+  <div id="balanceResult" style="text-align:center; font-weight:700; font-size:18px; margin-top:14px; color:#0f172a;">Enter address and click Check</div>
+
+  <p style="margin-top:12px; text-align:center; color:#666; font-size:13px;">
+    Note: This checks USDT (TRC20) token balance on TRON using a public API. If you see "CORS" error, use the serverless endpoint option provided in admin docs.
+  </p>
+</section>
+
+<script>
+async function fetchTronAccount(address) {
+  // Using public TronScan API (may be rate-limited / CORS policy)
+  // This endpoint lists tokens for an account: https://apilist.tronscan.org/api/account?address=<address>
+  const url = "https://apilist.tronscan.org/api/account?address=" + encodeURIComponent(address);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("Network error: " + r.status);
+  return r.json();
+}
+
+function formatNumber(n) {
+  return Number(n).toLocaleString(undefined, { maximumFractionDigits: 6 });
+}
+
+document.getElementById("checkBalanceBtn").addEventListener("click", async () => {
+  const addr = document.getElementById("tronAddressInput").value.trim();
+  const out = document.getElementById("balanceResult");
+  if (!addr) { out.innerText = "Please enter a TRON address."; return; }
+  out.innerText = "Checking...";
+
+  try {
+    const data = await fetchTronAccount(addr);
+    // TronScan returns token balances in data.tokenBalances (varies by endpoint)
+    // We try multiple possible fields to be resilient:
+    let usdtAmount = null;
+
+    // 1) tokenBalances array (TronGrid style)
+    if (data && data.tokenBalances && Array.isArray(data.tokenBalances)) {
+      for (const t of data.tokenBalances) {
+        // t.tokenName / t.tokenId / t.tokenDecimal may exist
+        const name = (t.tokenName || t.name || "").toLowerCase();
+        if (name.includes("tether") || name.includes("usdt") || (t.tokenId && t.tokenId.includes("Tether"))) {
+          // value may be in 'balance' or 'amount'
+          const raw = t.balance ?? t.amount ?? t.value ?? 0;
+          const decimals = t.tokenDecimal ?? t.decimals ?? 6;
+          usdtAmount = Number(raw) / Math.pow(10, decimals);
+          break;
+        }
+      }
+    }
+
+    // 2) older TronScan response uses tokenBalances map
+    if (usdtAmount === null && data && data.tokens) {
+      for (const t of data.tokens) {
+        const name = (t.tokenName || t.token) + "";
+        if (name.toLowerCase().includes("usdt") || name.toLowerCase().includes("tether")) {
+          usdtAmount = Number(t.balance) / (t.tokenDecimal ? Math.pow(10, t.tokenDecimal) : 6);
+          break;
+        }
+      }
+    }
+
+    if (usdtAmount === null) {
+      out.innerText = "USDT not found on this address (0) or API returned unexpected format.";
+    } else {
+      out.innerText = "USDT Balance: " + formatNumber(usdtAmount) + " USDT";
+    }
+  } catch (err) {
+    console.error(err);
+    // Helpful message for CORS or network issues
+    out.innerText = "Error checking balance: " + (err.message || err);
+  }
+});
+
+// Optional: prefill invoice address if you have a global invoice address variable
+document.getElementById("useInvoiceAddrBtn").addEventListener("click", () => {
+  // If your site stores the current invoice address in window.CURRENT_INVOICE_ADDRESS, use it:
+  const inv = window.CURRENT_INVOICE_ADDRESS || "";
+  if (inv) {
+    document.getElementById("tronAddressInput").value = inv;
+  } else {
+    alert("No invoice address detected on this page.");
+  }
+});
+</script>
+
 </body>
 </html>
