@@ -1,0 +1,2 @@
+- [x] Change the <title> in index.html to "CRYPTO MINEPRO – BY ANAS ALI TRADER"
+- [ ] Replace the first paragraph on the homepage with "Crypto MinePro is your simplified and powerful mining assistant built for traders and beginners."
